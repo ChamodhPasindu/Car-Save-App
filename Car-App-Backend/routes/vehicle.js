@@ -28,7 +28,7 @@ connection.connect(function (err) {
 
 const router = express.Router()
 
-router.post("/photo", upload.array('file', 5), function (req, res, next) {
+router.post("/save", upload.array('file', 5), function (req, res, next) {
     let img1 = req.files[0].originalname;
     let img2 = req.files[1].originalname;
     let img3 = req.files[2].originalname;
@@ -48,22 +48,54 @@ router.post("/photo", upload.array('file', 5), function (req, res, next) {
 
     console.log(img1, img2, img3, img4)
 
-    var addUser = "INSERT INTO vehicle VALUES (?,?,?,?,?,?,?,?)"
-    connection.query(addUser, [registrationNo, userId, brand, model, fuelType, mileage, transmission, description], (err) => {
+    var vehicleTable = "INSERT INTO vehicle VALUES (?,?,?,?,?,?,?,?)"
+    connection.query(vehicleTable, [registrationNo, userId, brand, model, fuelType, mileage, transmission, description], (err) => {
         if (err) {
             console.log(err)
             res.send({"message": "Vehicle Save Error"})
         } else {
-            var addUser = "INSERT INTO vehicle_img  (vehicle_no,img_one,img_two,img_three,img_four) VALUES (?,?,?,?,?)"
-            connection.query(addUser, [registrationNo, img1, img2, img3, img4], (err) => {
+            var vehicleImgTable = "INSERT INTO vehicle_img  (vehicle_no,img_one,img_two,img_three,img_four) VALUES (?,?,?,?,?)"
+            connection.query(vehicleImgTable, [registrationNo, img1, img2, img3, img4], (err) => {
                 if (err) {
                     console.log(err)
                     res.send({"message": "Vehicle Image Save Error"})
                 } else {
                     res.send({"message": "Vehicle Save Successfully"})
-
                 }
             })
+        }
+    })
+})
+
+router.get("/:id",(req,res)=>{
+    let id = req.params.id;
+    var getVehicleImg = "SELECT * FROM vehicle_img WHERE vehicle_no=?"
+    connection.query(getVehicleImg, [id], (err,rows) => {
+        if (err){
+            console.log(err)
+            res.send({"message":"Error"})
+        }else {
+            res.send({"data":rows})
+        }
+    })
+})
+
+router.put("/",(req,res)=>{
+    let registration_no = req.body.registration_no;
+    let brand = req.body.brand;
+    let model = req.body.model;
+    let fuelType = req.body.fuel_type;
+    let transmission = req.body.transmission;
+    let mileage = req.body.mileage;
+    let description = req.body.description;
+
+    var updateVehicle = "UPDATE vehicle SET brand=?,model=?,fuel_type=?,transmission=?,mileage=?,description=? WHERE vehicle_no=?"
+    connection.query(updateVehicle, [brand,model,fuelType,transmission,mileage,description,registration_no], (err,rows) => {
+        if (err){
+            console.log(err)
+            res.send({"message":"Vehicle Update Failed"})
+        }else {
+            res.send({"message":"Vehicle Updated Successfully"})
         }
     })
 })
