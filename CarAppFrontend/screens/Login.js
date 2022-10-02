@@ -11,7 +11,7 @@ import {
 
 import {NavigationContainer} from '@react-navigation/native';
 
-export default function Login() {
+export default function Login({navigation}) {
   const [show, setShow] = React.useState(false);
 
   return (
@@ -21,6 +21,7 @@ export default function Login() {
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: 20,
+        
       }}>
       <View style={{ flexDirection: 'column',
           justifyContent: 'center',
@@ -51,9 +52,9 @@ export default function Login() {
             size="2xl"
             placeholder="Password"
           />
-           <Button style={{borderRadius:100,marginTop:'10%',backgroundColor:'#005691'}} size='lg'>LOGIN</Button>
+           <Button onPress={()=>{navigation.navigate("Home")}} variant='solid' style={{borderRadius:100,marginTop:'10%'}} colorScheme="blue" size='lg'>LOGIN</Button>
            <Text textAlign='center' style={{color:'gray'}}>OR</Text>
-           <Button variant='solid' style={{borderRadius:100}} colorScheme='red' size='lg'>SIGNUP</Button>
+           <Button onPress={()=>{navigation.navigate("Signup")}} variant='solid' style={{borderRadius:100}} colorScheme='red' size='lg'>SIGNUP</Button>
         </Stack>
         <Text style={{textAlign: 'center',marginTop:40,color:'gray'}}>
         © 2021 Copyright Reserved
