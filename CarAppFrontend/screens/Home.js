@@ -47,3 +47,4 @@ export default function Home({navigation}) {
     </NativeBaseProvider>
   );
 }
+

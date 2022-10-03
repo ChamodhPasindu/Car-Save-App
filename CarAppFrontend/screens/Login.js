@@ -7,36 +7,34 @@ import {
   NativeBaseProvider,
   Input,
   Button,
+  ScrollView,
+  Center,
+  VStack
 } from 'native-base';
 
 import {NavigationContainer} from '@react-navigation/native';
+import {background} from 'native-base/lib/typescript/theme/styled-system';
 
 export default function Login({navigation}) {
   const [show, setShow] = React.useState(false);
 
   return (
-    <NativeBaseProvider
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: 20,
-        
-      }}>
-      <View style={{ flexDirection: 'column',
+    <NativeBaseProvider>
+     <Stack style={{ flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           width: '100%',
-          height: '35%'}}>
+          height: '35%',
+          }}>
         <Image
           source={require('./images/login-car.png')}
           style={{width: '100%', height: '100%'}}
         />
-      </View>
-      <View
+      </Stack>
+      <Stack
         style={{
           width: '100%',
-          height: '55%',
+          height: '65%',
         }}>
         <Heading size="3xl" style={{marginLeft: '10%'}}>
           Login
@@ -59,7 +57,8 @@ export default function Login({navigation}) {
         <Text style={{textAlign: 'center',marginTop:40,color:'gray'}}>
         © 2021 Copyright Reserved
       </Text>
-      </View>
+      </Stack>
     </NativeBaseProvider>
   );
-}
+} /* 
+ */
