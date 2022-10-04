@@ -45,6 +45,7 @@ export default function App() {
          <Stack.Screen
           name="AddVehicle"
           component={AddVehicle}
+          user_id={'2'}
           options={{ title:'Add New Vehicle',
           headerStyle: {
             backgroundColor: '#192138'

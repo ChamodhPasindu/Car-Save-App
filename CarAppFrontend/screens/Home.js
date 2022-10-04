@@ -23,8 +23,9 @@ export default function Home({navigation}) {
         <View
           style={{
             width: '90%',
-            height: '88%',
+            height: '86%',
             backgroundColor: 'skyblue',
+            marginTop:10
           }}></View>
         <View
           style={{
