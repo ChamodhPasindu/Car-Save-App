@@ -34,8 +34,11 @@ export default function Signup({navigation}) {
       });
       const json = await response.json();
       alert(json.message)
+      navigation.navigate("Login")
     } catch (error) {
       console.error(error);
+      alert("Try Again Latter")
+
     }
   };
 

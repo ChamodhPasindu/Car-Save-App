@@ -17,7 +17,10 @@ import {View, Image} from 'react-native';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-export default function AddVehicle(props) {
+export default function AddVehicle({route,navigation}) {
+
+  const {id}=route.params;
+
   const [fuel, setFule] = React.useState('');
   const [transmission, setTransmission] = React.useState('');
 
@@ -116,9 +119,6 @@ export default function AddVehicle(props) {
   };
 
   const saveDetails = async () => {
-    /* console.log(vehicleNo,brand,model,mileage,fuel,transmission,location,mobile,description); */
-    console.log(fileOne);
-
 
     let data = new FormData();
 
@@ -129,7 +129,7 @@ export default function AddVehicle(props) {
 
     let car = {
       registration_no: vehicleNo,
-      user_id: '1',
+      user_id:id,
       brand: brand,
       model: model,
       fuel_type: fuel,
@@ -153,6 +153,7 @@ export default function AddVehicle(props) {
       });
       const json = await response.json();
       alert(json.message);
+      navigation.navigate("Home",{user: id})
     } catch (error) {
       console.error(error);
     }
@@ -174,6 +175,7 @@ export default function AddVehicle(props) {
               justifyContent: 'center',
               width: '90%',
               height: '95%',
+
             }}>
             <Stack mt={5} space={4} w="100%" mx="auto">
               <HStack mt={4} space={4} justifyContent="center">
@@ -369,7 +371,7 @@ export default function AddVehicle(props) {
                   }}
                   onValueChange={itemValue => setFule(itemValue)}>
                   <Select.Item label="Petrol" value="petrol" />
-                  <Select.Item label="diesel" value="diesel" />
+                  <Select.Item label="Diesel" value="diesel" />
                 </Select>
               </Box>
               <Box w="100%">
