@@ -98,8 +98,9 @@ export default function AddVehicle({route,navigation}) {
         console.log(response.customButton);
       } else {
         const source = {
-          uri: 'data:image/jpej;base64,' + response.assets[0].base64,
+          uri: response.assets[0].uri,
         };
+        console.log(source)
         setImage(source);
         setFile({
           uri: response.assets[0].uri,
@@ -370,8 +371,8 @@ export default function AddVehicle({route,navigation}) {
                     endIcon: <CheckIcon size="5" />,
                   }}
                   onValueChange={itemValue => setFule(itemValue)}>
-                  <Select.Item label="Petrol" value="petrol" />
-                  <Select.Item label="Diesel" value="diesel" />
+                  <Select.Item label="Petrol" value="Petrol" />
+                  <Select.Item label="Diesel" value="Diesel" />
                 </Select>
               </Box>
               <Box w="100%">

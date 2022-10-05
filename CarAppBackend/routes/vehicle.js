@@ -2,6 +2,10 @@ const express = require("express");
 const mysql = require("mysql");
 const db = require("../configs/db.config");
 const multer = require("multer");
+
+const app=express();
+app.use('/uploads', express.static(process.cwd() + '/uploads'));
+
 const upload = multer({ dest: "uploads/" });
 
 const connection = mysql.createConnection(db.database);
@@ -10,7 +14,7 @@ connection.connect(function (err) {
     console.log(err);
   } else {
     var vehicleTable =
-      "CREATE TABLE IF NOT EXISTS vehicle(vehicle_no VARCHAR (50),user_id INT,brand VARCHAR (50),Model VARCHAR (20),fuel_Type VARCHAR (10),mileage INT,transmission VARCHAR (10),description VARCHAR(255),location VARCHAR (50),mobile VARCHAR(10),date VARCHAR(10) ,CONSTRAINT PRIMARY KEY (vehicle_no),CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE)";
+      "CREATE TABLE IF NOT EXISTS vehicle(vehicle_no VARCHAR (50),user_id INT,brand VARCHAR (50),model VARCHAR (20),fuel_Type VARCHAR (10),mileage INT,transmission VARCHAR (10),description VARCHAR(255),location VARCHAR (50),mobile VARCHAR(10),date VARCHAR(10) ,CONSTRAINT PRIMARY KEY (vehicle_no),CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE)";
     connection.query(vehicleTable, function (err, result) {
       if (result.warningCount === 0) {
         console.log("vehicle Table Created");
@@ -30,13 +34,13 @@ connection.connect(function (err) {
 const router = express.Router();
 
 router.post("/save", upload.array("file", 4), function (req, res, next) {
-  let img1 = req.files[0].filename;
-  let img2 = req.files[1].filename;
-  let img3 = req.files[2].filename;
-  let img4 = req.files[3].filename;
+  let img1 = req.files[0].originalname;
+  let img2 = req.files[1].originalname;
+  let img3 = req.files[2].originalname;
+  let img4 = req.files[3].originalname;
 
   let car = JSON.parse(req.body.car);
-
+ 
   let registrationNo = car.registration_no;
   let userId = car.user_id;
   let brand = car.brand;
@@ -116,7 +120,7 @@ router.get("/allVehicle/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  let location = req.query.location;
+  let location = req.query.location; 
   let date = req.query.date;
 
   var getVehicleImg = "SELECT * FROM vehicle WHERE location=? AND date=?";
@@ -131,6 +135,8 @@ router.get("/", (req, res) => {
 });
 
 router.put("/", (req, res) => {
+  console.log(req.body)
+
   let registration_no = req.body.registration_no;
   let brand = req.body.brand;
   let model = req.body.model;
@@ -138,9 +144,11 @@ router.put("/", (req, res) => {
   let transmission = req.body.transmission;
   let mileage = req.body.mileage;
   let description = req.body.description;
+  let location = req.body.location;
+  let mobile = req.body.mobile;
 
   var updateVehicle =
-    "UPDATE vehicle SET brand=?,model=?,fuel_type=?,transmission=?,mileage=?,description=? WHERE vehicle_no=?";
+    "UPDATE vehicle SET brand=?,model=?,fuel_type=?,transmission=?,mileage=?,description=?,location=?,mobile=? WHERE vehicle_no=?";
   connection.query(
     updateVehicle,
     [
@@ -150,6 +158,8 @@ router.put("/", (req, res) => {
       transmission,
       mileage,
       description,
+      location,
+      mobile,
       registration_no,
     ],
     (err) => {

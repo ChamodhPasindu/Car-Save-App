@@ -4,7 +4,8 @@ import {View} from 'react-native';
 import Signup from './screens/Signup';
 import Home from './screens/Home';
 import AddVehicle from './screens/AddVehicle';
-import { TouchableOpacity } from 'react-native';
+import VehicleDetail from './screens/VehicleDetail';
+import {TouchableOpacity} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -33,22 +34,34 @@ export default function App() {
           name="Home"
           component={Home}
           options={{
-            title:'Home',
+            title: 'Home',
             headerStyle: {
-              backgroundColor: '#192138'
+              backgroundColor: '#192138',
             },
             gestureEnabled: false,
             headerShown: true,
             headerLeft: () => <></>,
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="AddVehicle"
           component={AddVehicle}
-          options={{ title:'Add New Vehicle',
-          headerStyle: {
-            backgroundColor: '#192138'
-          }}}
+          options={{
+            title: 'Add New Vehicle',
+            headerStyle: {
+              backgroundColor: '#192138',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="VehicleDetail"
+          component={VehicleDetail}
+          options={{
+            title: 'Vehicle Details',
+            headerStyle: {
+              backgroundColor: '#192138',
+            },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

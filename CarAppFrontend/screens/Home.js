@@ -13,20 +13,25 @@ import {
   FlatList,
 } from 'native-base';
 
-import {View, KeyboardAvoidingView, Image,Alert} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {View, KeyboardAvoidingView, Image, Alert} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons'
+
+import { useIsFocused } from '@react-navigation/native';
 
 import DatePicker from 'react-native-date-picker';
 
 export default function Home({route, navigation}) {
+  const isFocused=useIsFocused();
   const {user} = route.params;
+
+  const [location, setLocation] = useState('');
 
   const [vehicles, setVehicle] = React.useState([]);
 
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
-  const getCurrentDate = () => {
+  const getDate = () => {
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
@@ -35,36 +40,57 @@ export default function Home({route, navigation}) {
   };
 
   useEffect(() => {
-    loadData();
-  });
+    if(isFocused){
+      loadData();
+    }
+  }, [isFocused]);
 
-  const loadData=()=>{
+  const loadData = () => {
     fetch('http://192.168.43.30:4000/vehicle/allVehicle/' + user)
-    .then(response => response.json())
-    .then(json => setVehicle(json.data));
-  }
+      .then(response => response.json())
+      .then(json => setVehicle(json.data));
+  };
 
-  const deleteRecord=(id)=>{
-    console.log(id)
+  const deleteRecord = id => {
+    console.log(id);
     Alert.alert(
-      "Are your sure?",
-      "Are you sure you want to remove this beautiful box?",
+      'Are your sure?',
+      'Are you sure you want to remove this beautiful box?',
       [
         {
-          text: "Yes",
+          text: 'Yes',
           onPress: () => {
-            fetch('http://192.168.43.30:4000/vehicle/' + id,{method:'DELETE'})
-            .then(response => response.json())
-            .then(json =>alert(json.message),loadData())
-            .catch(json=>alert(json.message));
+            fetch('http://192.168.43.30:4000/vehicle/' + id, {method: 'DELETE'})
+              .then(response => response.json())
+              .then(json => alert(json.message),loadData())
+              .catch(json => alert(json.message));
           },
         },
         {
-          text: "No",
+          text: 'No',
         },
-      ]
+      ],
     );
-  }
+  };
+
+  const searchVehicle = async () => {
+    try {
+      const response = await fetch(
+        'http://192.168.43.30:4000/vehicle/?location=' +
+          location +
+          '&date=' +
+          getDate(),
+      );
+      const json = await response.json();
+      if (json.data.length === 0) {
+        alert(`No vehicle save on ${getDate()} at ${location}`);
+      } else {
+        setVehicle(json.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <NativeBaseProvider>
@@ -75,9 +101,10 @@ export default function Home({route, navigation}) {
               <Button
                 onPress={() => setOpen(true)}
                 variant="outline"
+                colorScheme={'gray'}
                 rounded={20}
                 h="100%"
-                w="36%">
+                w="28%">
                 <DatePicker
                   modal
                   open={open}
@@ -90,25 +117,32 @@ export default function Home({route, navigation}) {
                     setOpen(false);
                   }}
                 />
-                {getCurrentDate()}
+                {getDate()}
               </Button>
               <Input
+                onChangeText={e => {
+                  setLocation(e);
+                }}
+                value={location}
                 rounded={20}
                 h="100%"
-                w="38%"
+                w="35%"
                 size="lg"
                 placeholder="Locaion"
                 colorScheme={'primary'}
               />
               <Button
+                onPress={() => {
+                  searchVehicle();
+                }}
                 rounded={20}
                 h="100%"
-                w="20%"
+                size={'sm'}
                 variant="solid"
-                style={{backgroundColor:"#595959"}}
-                size="sm">
+                colorScheme="gray">
                 SEARCH
               </Button>
+            
             </HStack>
           </Center>
           <Stack w="90%" h="580" rounded="md">
@@ -127,7 +161,7 @@ export default function Home({route, navigation}) {
                     <Stack>
                       <Heading size="lg" style={{color: '#dddddd'}}>
                         {item.brand}
-                        {' ' + item.Model}
+                        {' ' + item.model}
                       </Heading>
                       <Text fontSize="xl" style={{color: '#dddddd'}}>
                         {item.location}
@@ -135,22 +169,26 @@ export default function Home({route, navigation}) {
                       <Text fontSize="lg" style={{color: '#aaaaaa'}}>
                         {item.fuel_Type}
                         {' - ' + item.transmission}
-                      </Text> 
+                      </Text>
                       <Text fontSize="md" style={{color: '#aaaaaa'}}>
                         {item.mobile}
                       </Text>
                     </Stack>
                     <VStack space={2} alignItems="center">
                       <Text fontSize="md" style={{color: '#dddddd'}}>
-                        2020-06-08
+                        {item.date}
                       </Text>
-                      <Button rounded={20} size={'sm'}  variant="subtle"
+                      <Button
+                      onPress={()=>{navigation.navigate("VehicleDetail",{vehicle:item})}}
+                        rounded={20}
+                        size={'sm'}
+                        variant="subtle"
                         colorScheme="green">
                         DETAILS
                       </Button>
                       <Button
-                        onPress={()=>{
-                            deleteRecord(item.vehicle_no)
+                        onPress={() => {
+                          deleteRecord(item.vehicle_no);
                         }}
                         size={'sm'}
                         rounded={20}
