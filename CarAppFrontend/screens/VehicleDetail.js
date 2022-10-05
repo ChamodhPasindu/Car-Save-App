@@ -16,10 +16,23 @@ import {
   FlatList,
 } from 'native-base';
 
+import Carousel from 'react-native-reanimated-carousel';
+
+import {SliderBox} from 'react-native-image-slider-box';
+
 export default function VehicleDetail({route, navigation}) {
+  const url = 'file:///data/user/0/com.carappfrontend/cache/';
+
   const vehicle = route.params.vehicle;
 
-  const [images, setImages] = React.useState([]);
+  const [imagePlace, setLoadImage] = React.useState('');
+
+  const [images, setImages] = React.useState([
+    url + vehicle.img_one,
+    url + vehicle.img_two,
+    url + vehicle.img_three,
+    url + vehicle.img_four,
+  ]);
   const [fuel, setFule] = React.useState(vehicle.fuel_Type);
   const [transmission, setTransmission] = React.useState(vehicle.transmission);
 
@@ -32,18 +45,8 @@ export default function VehicleDetail({route, navigation}) {
   const [description, setDescription] = React.useState(vehicle.description);
 
   useEffect(() => {
-    console.log(vehicleNo);
-
-    loadVehicleImg();
-    console.log(images);
+    console.log(images[0]);
   }, []);
-
-  const loadVehicleImg =  () => {
-     fetch('http://192.168.43.30:4000/vehicle/' + vehicleNo)
-      .then(response => response.json())
-      .then(json => setImages(json.data))
-      .catch(err => console.log(err));
-  };
 
   const updateRecord = async () => {
     let car = {
@@ -77,27 +80,13 @@ export default function VehicleDetail({route, navigation}) {
     <NativeBaseProvider>
       <ScrollView>
         <VStack space={4} alignItems="center" justifyContent={'space-around'}>
-          <Stack mt={5} w="350" h="200" bg="indigo.300" rounded="md">
-            <FlatList
-            width='100%'
-            height='100%'
-              data={images}
-              renderItem={({item}) => {
-                <Image
-                  source={{
-                    uri:
-                      'file:///data/user/0/com.carappfrontend/cache/rn_image_picker_lib_temp_66d4df7c-0a5f-4ecf-8d5f-d838db479db3.jpg' 
-                  }}
-                  alt="Alternate Text"
-                  width="100%"
-                  height="100%"
-                />;
-                <Text>
-                  Hellow
-                </Text>
-              }}
+          <Center mt={5} w="350" h="200" bg="indigo.100" rounded="md">
+            <SliderBox
+              images={images}
+              dotColor="black"
+              parentWidth={350}
             />
-          </Stack>
+          </Center>
           <Center w="90%" rounded="md">
             <Stack space={4} w="100%" mx="auto">
               <Input
@@ -196,9 +185,8 @@ export default function VehicleDetail({route, navigation}) {
                   }}
                   mb={4}
                   w="40%"
-                  style={{borderRadius: 100}}
+                  style={{borderRadius: 100,backgroundColor:'#044BA1'}}
                   variant="solid"
-                  colorScheme="blue"
                   size="md">
                   UPDATE
                 </Button>

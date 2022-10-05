@@ -105,15 +105,11 @@ export default function Signup({navigation}) {
           />
           <Button
             onPress={registerUser}
-            style={{borderRadius: 100, marginTop: '10%'}}
-            colorScheme="red"
+            style={{borderRadius: 100, marginTop: '10%',backgroundColor:'#B33030'}}
             size="lg">
             SIGN UP
           </Button>
         </Stack>
-        <Text style={{textAlign: 'center', marginTop: 40, color: 'gray'}}>
-          © 2021 Copyright Reserved
-        </Text>
       </View>
     </NativeBaseProvider>
   );

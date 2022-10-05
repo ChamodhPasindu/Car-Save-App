@@ -14,18 +14,10 @@ connection.connect(function (err) {
     console.log(err);
   } else {
     var vehicleTable =
-      "CREATE TABLE IF NOT EXISTS vehicle(vehicle_no VARCHAR (50),user_id INT,brand VARCHAR (50),model VARCHAR (20),fuel_Type VARCHAR (10),mileage INT,transmission VARCHAR (10),description VARCHAR(255),location VARCHAR (50),mobile VARCHAR(10),date VARCHAR(10) ,CONSTRAINT PRIMARY KEY (vehicle_no),CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE)";
+      "CREATE TABLE IF NOT EXISTS vehicle(vehicle_no VARCHAR (50),user_id INT,brand VARCHAR (50),model VARCHAR (20),fuel_Type VARCHAR (10),mileage INT,transmission VARCHAR (10),description VARCHAR(255),location VARCHAR (50),mobile VARCHAR(10),date VARCHAR(10),img_one VARCHAR(255),img_two VARCHAR(255),img_three VARCHAR(255),img_four VARCHAR(255) ,CONSTRAINT PRIMARY KEY (vehicle_no),CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE)";
     connection.query(vehicleTable, function (err, result) {
       if (result.warningCount === 0) {
         console.log("vehicle Table Created");
-
-        var vehicleImgTable =
-          "CREATE TABLE IF NOT EXISTS vehicle_img(id INT AUTO_INCREMENT,vehicle_no VARCHAR (20),img_one VARCHAR (255),img_two VARCHAR (255),img_three VARCHAR (255),img_four VARCHAR (255),CONSTRAINT PRIMARY KEY (id),CONSTRAINT FOREIGN KEY (vehicle_no) REFERENCES vehicle (vehicle_no) ON DELETE CASCADE ON UPDATE CASCADE)";
-        connection.query(vehicleImgTable, function (err, result) {
-          if (result.warningCount === 0) {
-            console.log("vehicle Image Table Created");
-          }
-        });
       }
     });
   }
@@ -53,7 +45,7 @@ router.post("/save", upload.array("file", 4), function (req, res, next) {
   let mobile = car.mobile;
   let date = car.date;
 
-  var vehicleTable = "INSERT INTO vehicle VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+  var vehicleTable = "INSERT INTO vehicle VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
   connection.query(
     vehicleTable,
     [
@@ -68,26 +60,15 @@ router.post("/save", upload.array("file", 4), function (req, res, next) {
       location,
       mobile,
       date,
+      img1,
+      img2,img3,img4
     ],
     (err) => {
       if (err) {
         console.log(err);
         res.send({ message: "Vehicle Save Error" });
       } else {
-        var vehicleImgTable =
-          "INSERT INTO vehicle_img  (vehicle_no,img_one,img_two,img_three,img_four) VALUES (?,?,?,?,?)";
-        connection.query(
-          vehicleImgTable,
-          [registrationNo, img1, img2, img3, img4],
-          (err) => {
-            if (err) {
-              console.log(err);
-              res.send({ message: "Vehicle Image Save Error" });
-            } else {
-              res.send({ message: "Vehicle Save Successfully" });
-            }
-          }
-        );
+        res.send({ message: "Vehicle Save Successfully" });
       }
     }
   );
@@ -135,7 +116,6 @@ router.get("/", (req, res) => {
 });
 
 router.put("/", (req, res) => {
-  console.log(req.body)
 
   let registration_no = req.body.registration_no;
   let brand = req.body.brand;

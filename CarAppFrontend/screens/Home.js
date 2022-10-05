@@ -96,8 +96,8 @@ export default function Home({route, navigation}) {
     <NativeBaseProvider>
       <ScrollView>
         <VStack space={4} alignItems="center">
-          <Center mt={3} w="90%" h="10" rounded="md">
-            <HStack w="100%" h="100%" space={3} justifyContent="center">
+          <Center mt={3} w="90%" h="10"  rounded="md">
+            <HStack w="100%" h="100%" space={3}  justifyContent="center">
               <Button
                 onPress={() => setOpen(true)}
                 variant="outline"
@@ -145,12 +145,14 @@ export default function Home({route, navigation}) {
             
             </HStack>
           </Center>
-          <Stack w="90%" h="580" rounded="md">
+          <Stack w="90%" h="580"  rounded="md">
             <ScrollView>
               <FlatList
                 space={10}
+                scrollEnabled={true}
                 data={vehicles}
                 renderItem={({item}) => (
+                  
                   <HStack
                     padding={6}
                     mb={5}
@@ -158,6 +160,7 @@ export default function Home({route, navigation}) {
                     justifyContent="space-between"
                     rounded="md"
                     style={{borderWidth: 0.4, borderColor: '#595959'}}>
+                      
                     <Stack>
                       <Heading size="lg" style={{color: '#dddddd'}}>
                         {item.brand}
@@ -209,7 +212,7 @@ export default function Home({route, navigation}) {
                 navigation.navigate('AddVehicle', {id: user});
               }}
               colorScheme="blue"
-              style={{height: '100%', borderRadius: 100}}>
+                  style={{height: '100%', borderRadius: 100,backgroundColor:'#044BA1'}}>
               + ADD NEW
             </Button>
           </Center>

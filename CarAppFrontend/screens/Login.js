@@ -54,8 +54,9 @@ export default function Login({navigation}) {
             height: '35%',
           }}>
           <Image
-            source={require('./images/login-car.png')}
-            style={{width: '100%', height: '100%'}}
+          resizeMode='contain'
+            source={require('./images/audi.png')}
+            style={{width: '100%', height: '90%'}}
           />
         </Stack>
         <Stack
@@ -94,8 +95,8 @@ export default function Login({navigation}) {
                 verifyLogin();
               }}
               variant="solid"
-              style={{borderRadius: 100, marginTop: '10%'}}
-              colorScheme="blue"
+              style={{borderRadius: 100, marginTop: '10%',backgroundColor:'#044BA1'}}
+              
               size="lg">
               LOGIN
             </Button>
@@ -106,7 +107,7 @@ export default function Login({navigation}) {
               onPress={() => {
                 navigation.navigate('Signup');
               }}
-              variant="solid"
+              variant="outline"
               style={{borderRadius: 100}}
               colorScheme="red"
               size="lg">
@@ -120,5 +121,3 @@ export default function Login({navigation}) {
     </NativeBaseProvider>
   );
 }
-/*
- */
