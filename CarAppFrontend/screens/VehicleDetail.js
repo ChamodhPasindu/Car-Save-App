@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
-  Text,
   NativeBaseProvider,
   ScrollView,
   Stack,
@@ -11,12 +10,9 @@ import {
   Box,
   TextArea,
   Select,
-  CheckIcon,
-  Image,
-  FlatList,
+  HStack,
+  CheckIcon
 } from 'native-base';
-
-import Carousel from 'react-native-reanimated-carousel';
 
 import {SliderBox} from 'react-native-image-slider-box';
 
@@ -24,8 +20,6 @@ export default function VehicleDetail({route, navigation}) {
   const url = 'file:///data/user/0/com.carappfrontend/cache/';
 
   const vehicle = route.params.vehicle;
-
-  const [imagePlace, setLoadImage] = React.useState('');
 
   const [images, setImages] = React.useState([
     url + vehicle.img_one,
@@ -43,10 +37,6 @@ export default function VehicleDetail({route, navigation}) {
   const [location, setLocation] = React.useState(vehicle.location);
   const [mobile, setMobile] = React.useState(vehicle.mobile);
   const [description, setDescription] = React.useState(vehicle.description);
-
-  useEffect(() => {
-    console.log(images[0]);
-  }, []);
 
   const updateRecord = async () => {
     let car = {
@@ -80,50 +70,58 @@ export default function VehicleDetail({route, navigation}) {
     <NativeBaseProvider>
       <ScrollView>
         <VStack space={4} alignItems="center" justifyContent={'space-around'}>
-          <Center mt={5} w="350" h="200" bg="indigo.100" rounded="md">
-            <SliderBox
-              images={images}
-              dotColor="black"
-              parentWidth={350}
-            />
+          <Center mt={5} w="350" h="200" rounded="md">
+            <SliderBox images={images} dotColor="black" parentWidth={350} />
           </Center>
-          <Center w="90%" rounded="md">
-            <Stack space={4} w="100%" mx="auto">
+          <VStack space={4} w="90%" alignItems={'center'} rounded="md">
+            <Input
+              isDisabled={'true'}
+              size="xl"
+              placeholder="Vehicle Number"
+              value={vehicleNo}
+              onChangeText={e => {
+                setVehicleNo(e);
+              }}
+            />
+            <HStack space={3} justifyContent="center">
+              <Stack space={4} w="48%" mx="auto">
+                <Input
+                  size="xl"
+                  placeholder="Brand"
+                  value={brand}
+                  onChangeText={e => {
+                    setBrand(e);
+                  }}
+                />
+                <Input
+                  size="xl"
+                  placeholder="Model"
+                  value={model}
+                  onChangeText={e => {
+                    setModel(e);
+                  }}
+                />
+                <Input
+                  keyboardType="numeric"
+                  size="xl"
+                  placeholder="Mileage"
+                  value={mileage}
+                  onChangeText={e => {
+                    setMileage(e);
+                  }}
+                />
+              </Stack>
+              <Stack  space={4} w="48%" mx="auto">
               <Input
-                isDisabled={'true'}
                 size="xl"
-                placeholder="Vehicle Number"
-                value={vehicleNo}
-                onChangeText={e => {
-                  setVehicleNo(e);
-                }}
-              />
-              <Input
-                size="xl"
-                placeholder="Brand"
-                value={brand}
-                onChangeText={e => {
-                  setBrand(e);
-                }}
-              />
-              <Input
-                size="xl"
-                placeholder="Model"
-                value={model}
-                onChangeText={e => {
-                  setModel(e);
-                }}
-              />
-              <Input
                 keyboardType="numeric"
-                size="xl"
-                placeholder="Mileage"
-                value={mileage}
+                placeholder="Mobile"
+                value={mobile}
                 onChangeText={e => {
-                  setMileage(e);
+                  setMobile(e);
                 }}
               />
-              <Box w="100%">
+               <Box w="100%">
                 <Select
                   fontSize="lg"
                   selectedValue={fuel}
@@ -151,7 +149,9 @@ export default function VehicleDetail({route, navigation}) {
                   <Select.Item label="Manual" value="Manual" />
                 </Select>
               </Box>
-              <Input
+              </Stack>
+            </HStack>
+            <Input
                 size="xl"
                 placeholder="Location"
                 value={location}
@@ -159,15 +159,7 @@ export default function VehicleDetail({route, navigation}) {
                   setLocation(e);
                 }}
               />
-              <Input
-                size="xl"
-                placeholder="Mobile"
-                value={mobile}
-                onChangeText={e => {
-                  setMobile(e);
-                }}
-              />
-              <Box mb={4} alignItems="center" w="100%">
+               <Box mb={4} alignItems="center" w="100%">
                 <TextArea
                   fontSize="lg"
                   placeholder="Description"
@@ -178,21 +170,18 @@ export default function VehicleDetail({route, navigation}) {
                   }}
                 />
               </Box>
-              <VStack space={4} alignItems="center">
-                <Button
+              <Button
                   onPress={() => {
                     updateRecord();
                   }}
                   mb={4}
                   w="40%"
-                  style={{borderRadius: 100,backgroundColor:'#044BA1'}}
+                  style={{borderRadius: 100, backgroundColor: '#044BA1'}}
                   variant="solid"
                   size="md">
                   UPDATE
                 </Button>
-              </VStack>
-            </Stack>
-          </Center>
+          </VStack>
         </VStack>
       </ScrollView>
     </NativeBaseProvider>

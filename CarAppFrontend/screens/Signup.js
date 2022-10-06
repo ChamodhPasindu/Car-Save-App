@@ -1,10 +1,6 @@
 import {
   Button,
-  Box,
   NativeBaseProvider,
-  Switch,
-  TextArea,
-  VStack,
   Heading,
   Text,
   Stack,

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, KeyboardAvoidingView, Image} from 'react-native';
+import { Image} from 'react-native';
 import {
   Text,
   Heading,
@@ -7,15 +7,7 @@ import {
   NativeBaseProvider,
   Input,
   Button,
-  ScrollView,
-  Center,
-  VStack,
 } from 'native-base';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {background} from 'native-base/lib/typescript/theme/styled-system';
-
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function Login({navigation}) {
   const [show, setShow] = React.useState(false);
@@ -36,7 +28,7 @@ export default function Login({navigation}) {
       });
       const json = await response.json();
       navigation.navigate('Home', {user: json.user.user_id});
-      alert(json.message);
+      
     } catch (error) {
       console.error(error);
       alert('Incorrect Username or Password');
@@ -62,7 +54,6 @@ export default function Login({navigation}) {
         <Stack
           style={{
             width: '100%',
-            height: '65%',
           }}>
           <Heading size="3xl" style={{marginLeft: '10%'}}>
             Login

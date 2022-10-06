@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   NativeBaseProvider,
   Stack,
@@ -17,24 +17,23 @@ import {View, Image} from 'react-native';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-export default function AddVehicle({route,navigation}) {
-
-  const {id}=route.params;
+export default function AddVehicle({route, navigation}) {
+  const {id} = route.params;
 
   const [fuel, setFule] = React.useState('');
   const [transmission, setTransmission] = React.useState('');
 
   const [imageOne, setImageOne] = React.useState(
-    require('./images/thumbnail.jpg'),
+    require('./images/thumb.jpeg'),
   );
   const [imageTwo, setImageTwo] = React.useState(
-    require('./images/thumbnail.jpg'),
+    require('./images/thumb.jpeg'),
   );
   const [imageThree, setImageThree] = React.useState(
-    require('./images/thumbnail.jpg'),
+    require('./images/thumb.jpeg'),
   );
   const [imageFour, setImageFour] = React.useState(
-    require('./images/thumbnail.jpg'),
+    require('./images/thumb.jpeg'),
   );
 
   const [fileOne, setFileOne] = React.useState('');
@@ -100,7 +99,6 @@ export default function AddVehicle({route,navigation}) {
         const source = {
           uri: response.assets[0].uri,
         };
-        console.log(source)
         setImage(source);
         setFile({
           uri: response.assets[0].uri,
@@ -120,7 +118,6 @@ export default function AddVehicle({route,navigation}) {
   };
 
   const saveDetails = async () => {
-
     let data = new FormData();
 
     data.append('file', fileOne);
@@ -130,7 +127,7 @@ export default function AddVehicle({route,navigation}) {
 
     let car = {
       registration_no: vehicleNo,
-      user_id:id,
+      user_id: id,
       brand: brand,
       model: model,
       fuel_type: fuel,
@@ -154,7 +151,7 @@ export default function AddVehicle({route,navigation}) {
       });
       const json = await response.json();
       alert(json.message);
-      navigation.navigate("Home",{user: id})
+      navigation.navigate('Home', {user: id});
     } catch (error) {
       console.error(error);
     }
@@ -176,9 +173,8 @@ export default function AddVehicle({route,navigation}) {
               justifyContent: 'center',
               width: '90%',
               height: '95%',
-
             }}>
-            <Stack mt={5} space={4} w="100%" mx="auto">
+            <VStack alignItems={'center'} space={4} w="100%" mx="auto">
               <HStack mt={4} space={4} justifyContent="center">
                 <Center h="40" w="48%">
                   <Center
@@ -194,14 +190,14 @@ export default function AddVehicle({route,navigation}) {
                   <HStack
                     w="100%"
                     h="30%"
-                    justifyContent="space-around"
+                    justifyContent="space-evenly"
                     alignItems="center">
                     <Button
                       onPress={() => {
                         openGallery(setImageOne, setFileOne);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="red"
                       size="sm">
                       Gallery
                     </Button>
@@ -209,8 +205,8 @@ export default function AddVehicle({route,navigation}) {
                       onPress={() => {
                         openCamera(setImageOne, setFileOne);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="green"
                       size="sm">
                       Camera
                     </Button>
@@ -230,14 +226,14 @@ export default function AddVehicle({route,navigation}) {
                   <HStack
                     w="100%"
                     h="30%"
-                    justifyContent="space-around"
+                    justifyContent="space-evenly"
                     alignItems="center">
                     <Button
                       onPress={() => {
                         openGallery(setImageTwo, setFileTwo);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="red"
                       size="sm">
                       Gallery
                     </Button>
@@ -245,8 +241,8 @@ export default function AddVehicle({route,navigation}) {
                       onPress={() => {
                         openCamera(setImageTwo, setFileTwo);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="green"
                       size="sm">
                       Camera
                     </Button>
@@ -268,14 +264,14 @@ export default function AddVehicle({route,navigation}) {
                   <HStack
                     w="100%"
                     h="30%"
-                    justifyContent="space-around"
+                    justifyContent="space-evenly"
                     alignItems="center">
                     <Button
                       onPress={() => {
                         openGallery(setImageThree, setFileThree);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="red"
                       size="sm">
                       Gallery
                     </Button>
@@ -283,8 +279,8 @@ export default function AddVehicle({route,navigation}) {
                       onPress={() => {
                         openCamera(setImageThree, setFileThree);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="green"
                       size="sm">
                       Camera
                     </Button>
@@ -304,14 +300,14 @@ export default function AddVehicle({route,navigation}) {
                   <HStack
                     w="100%"
                     h="30%"
-                    justifyContent="space-around"
+                    justifyContent="space-evenly"
                     alignItems="center">
                     <Button
                       onPress={() => {
                         openGallery(setImageFour, setFileFour);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="red"
                       size="sm">
                       Gallery
                     </Button>
@@ -319,8 +315,8 @@ export default function AddVehicle({route,navigation}) {
                       onPress={() => {
                         openCamera(setImageFour, setFileFour);
                       }}
-                      variant="solid"
-                      colorScheme="blue"
+                      variant="subtle"
+                      colorScheme="green"
                       size="sm">
                       Camera
                     </Button>
@@ -328,7 +324,6 @@ export default function AddVehicle({route,navigation}) {
                 </Center>
               </HStack>
               <Input
-                mt={5}
                 size="xl"
                 placeholder="Vehicle Number"
                 onChangeText={e => {
@@ -336,59 +331,73 @@ export default function AddVehicle({route,navigation}) {
                 }}
                 value={vehicleNo}
               />
-              <Input
-                size="xl"
-                placeholder="Brand"
-                onChangeText={e => {
-                  setBrand(e);
-                }}
-                value={brand}
-              />
-              <Input
-                size="xl"
-                placeholder="Model"
-                onChangeText={e => {
-                  setModel(e);
-                }}
-                value={model}
-              />
-              <Input
-                keyboardType="numeric"
-                size="xl"
-                placeholder="Mileage"
-                onChangeText={e => {
-                  setMileage(e);
-                }}
-              />
+              <HStack space={3} justifyContent="center">
+                <VStack space={4} w="48%" rounded="md">
+                  <Input
+                    size="xl"
+                    placeholder="Brand"
+                    onChangeText={e => {
+                      setBrand(e);
+                    }}
+                    value={brand}
+                  />
+                  <Input
+                    size="xl"
+                    placeholder="Model"
+                    onChangeText={e => {
+                      setModel(e);
+                    }}
+                    value={model}
+                  />
+                  <Input
+                    keyboardType="numeric"
+                    size="xl"
+                    placeholder="Mileage"
+                    onChangeText={e => {
+                      setMileage(e);
+                    }}
+                  />
+                </VStack>
+                <VStack space={4} w="48%" rounded="md">
+                  <Input
+                    size="xl"
+                    placeholder="Mobile"
+                    onChangeText={e => {
+                      setMobile(e);
+                    }}
+                    value={mobile}
+                  />
+                  <Box w="100%">
+                    <Select
+                      fontSize="lg"
+                      selectedValue={fuel}
+                      placeholder="Fuel Type"
+                      _selectedItem={{
+                        bg: 'red.900',
+                        endIcon: <CheckIcon size="5" />,
+                      }}
+                      onValueChange={itemValue => setFule(itemValue)}>
+                      <Select.Item label="Petrol" value="Petrol" />
+                      <Select.Item label="Diesel" value="Diesel" />
+                    </Select>
+                  </Box>
+                  <Box w="100%">
+                    <Select
+                      fontSize="lg"
+                      selectedValue={transmission}
+                      placeholder="Transmission"
+                      _selectedItem={{
+                        bg: 'red.900',
+                        endIcon: <CheckIcon size="5" />,
+                      }}
+                      onValueChange={itemValue => setTransmission(itemValue)}>
+                      <Select.Item label="Auto" value="Auto" />
+                      <Select.Item label="Manual" value="Manual" />
+                    </Select>
+                  </Box>
+                </VStack>
+              </HStack>
 
-              <Box w="100%">
-                <Select
-                  fontSize="lg"
-                  selectedValue={fuel}
-                  placeholder="Fuel Type"
-                  _selectedItem={{
-                    bg: 'red.900',
-                    endIcon: <CheckIcon size="5" />,
-                  }}
-                  onValueChange={itemValue => setFule(itemValue)}>
-                  <Select.Item label="Petrol" value="Petrol" />
-                  <Select.Item label="Diesel" value="Diesel" />
-                </Select>
-              </Box>
-              <Box w="100%">
-                <Select
-                  fontSize="lg"
-                  selectedValue={transmission}
-                  placeholder="Transmission"
-                  _selectedItem={{
-                    bg: 'red.900',
-                    endIcon: <CheckIcon size="5" />,
-                  }}
-                  onValueChange={itemValue => setTransmission(itemValue)}>
-                  <Select.Item label="Auto" value="Auto" />
-                  <Select.Item label="Manual" value="Manual" />
-                </Select>
-              </Box>
               <Input
                 size="xl"
                 placeholder="Location"
@@ -397,14 +406,7 @@ export default function AddVehicle({route,navigation}) {
                 }}
                 value={location}
               />
-              <Input
-                size="xl"
-                placeholder="Mobile"
-                onChangeText={e => {
-                  setMobile(e);
-                }}
-                value={mobile}
-              />
+
               <Box mb={4} alignItems="center" w="100%">
                 <TextArea
                   fontSize="lg"
@@ -416,18 +418,15 @@ export default function AddVehicle({route,navigation}) {
                   value={description}
                 />
               </Box>
-              <VStack space={4} alignItems="center">
                 <Button
                   onPress={saveDetails}
                   mb={4}
                   w="40%"
-                  style={{borderRadius: 100}}
-                  colorScheme="red"
+                  style={{borderRadius: 100,backgroundColor:'#B33030'}}
                   size="md">
                   SAVE
                 </Button>
-              </VStack>
-            </Stack>
+            </VStack>
           </View>
         </Stack>
       </ScrollView>

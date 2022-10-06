@@ -1,11 +1,9 @@
 import React from 'react';
 import Login from './screens/Login';
-import {View} from 'react-native';
 import Signup from './screens/Signup';
 import Home from './screens/Home';
 import AddVehicle from './screens/AddVehicle';
 import VehicleDetail from './screens/VehicleDetail';
-import {TouchableOpacity} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';

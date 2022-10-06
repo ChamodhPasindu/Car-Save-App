@@ -10,18 +10,18 @@ import {
   Heading,
   Text,
   ScrollView,
-  FlatList,
 } from 'native-base';
 
-import {View, KeyboardAvoidingView, Image, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
+import {Image, Alert, LogBox} from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
+import {IconButton} from 'react-native-paper';
+
+import {useIsFocused} from '@react-navigation/native';
 
 import DatePicker from 'react-native-date-picker';
 
 export default function Home({route, navigation}) {
-  const isFocused=useIsFocused();
+  const isFocused = useIsFocused();
   const {user} = route.params;
 
   const [location, setLocation] = useState('');
@@ -40,7 +40,8 @@ export default function Home({route, navigation}) {
   };
 
   useEffect(() => {
-    if(isFocused){
+    LogBox.ignoreLogs(['Internal React error']);
+    if (isFocused) {
       loadData();
     }
   }, [isFocused]);
@@ -52,17 +53,16 @@ export default function Home({route, navigation}) {
   };
 
   const deleteRecord = id => {
-    console.log(id);
     Alert.alert(
       'Are your sure?',
-      'Are you sure you want to remove this beautiful box?',
+      'Are you sure you want to remove vehicle record?',
       [
         {
           text: 'Yes',
           onPress: () => {
             fetch('http://192.168.43.30:4000/vehicle/' + id, {method: 'DELETE'})
               .then(response => response.json())
-              .then(json => alert(json.message),loadData())
+              .then(json => alert(json.message), loadData())
               .catch(json => alert(json.message));
           },
         },
@@ -96,8 +96,8 @@ export default function Home({route, navigation}) {
     <NativeBaseProvider>
       <ScrollView>
         <VStack space={4} alignItems="center">
-          <Center mt={3} w="90%" h="10"  rounded="md">
-            <HStack w="100%" h="100%" space={3}  justifyContent="center">
+          <Center mt={3} w="90%" h="10" rounded="md">
+            <HStack w="100%" h="100%" space={2} justifyContent="center">
               <Button
                 onPress={() => setOpen(true)}
                 variant="outline"
@@ -142,77 +142,100 @@ export default function Home({route, navigation}) {
                 colorScheme="gray">
                 SEARCH
               </Button>
-            
+              <IconButton
+                icon="reload"
+                color="gray"
+                size={20}
+                onPress={() => {loadData()}}
+              />
+              
             </HStack>
           </Center>
-          <Stack w="90%" h="580"  rounded="md">
+          <Stack  w="90%" h="580" rounded="md">
             <ScrollView>
-              <FlatList
-                space={10}
-                scrollEnabled={true}
-                data={vehicles}
-                renderItem={({item}) => (
-                  
-                  <HStack
-                    padding={6}
-                    mb={5}
-                    space={3}
-                    justifyContent="space-between"
-                    rounded="md"
-                    style={{borderWidth: 0.4, borderColor: '#595959'}}>
-                      
-                    <Stack>
-                      <Heading size="lg" style={{color: '#dddddd'}}>
-                        {item.brand}
-                        {' ' + item.model}
-                      </Heading>
-                      <Text fontSize="xl" style={{color: '#dddddd'}}>
-                        {item.location}
-                      </Text>
-                      <Text fontSize="lg" style={{color: '#aaaaaa'}}>
-                        {item.fuel_Type}
-                        {' - ' + item.transmission}
-                      </Text>
-                      <Text fontSize="md" style={{color: '#aaaaaa'}}>
-                        {item.mobile}
-                      </Text>
-                    </Stack>
-                    <VStack space={2} alignItems="center">
-                      <Text fontSize="md" style={{color: '#dddddd'}}>
-                        {item.date}
-                      </Text>
-                      <Button
-                      onPress={()=>{navigation.navigate("VehicleDetail",{vehicle:item})}}
-                        rounded={20}
-                        size={'sm'}
-                        variant="subtle"
-                        colorScheme="green">
-                        DETAILS
-                      </Button>
-                      <Button
-                        onPress={() => {
-                          deleteRecord(item.vehicle_no);
-                        }}
-                        size={'sm'}
-                        rounded={20}
-                        variant="subtle"
-                        colorScheme="secondary">
-                        DELETE
-                      </Button>
-                    </VStack>
-                  </HStack>
-                )}
-              />
+            {vehicles.map((item,index)=>(
+               <HStack key={index}
+               padding={3}
+               mb={5}
+               justifyContent="space-between"
+               rounded="md"
+               style={{borderWidth: 1, borderColor: '#595959'}}>
+               <Center
+                 height={'120'}
+                 w="120"
+                 style={{overflow: 'hidden', borderRadius: 5}}>
+                 <Image
+                   borderRadius={6}
+                   source={{
+                     uri:
+                       'file:///data/user/0/com.carappfrontend/cache/' +
+                       item.img_one,
+                   }}
+                   style={{width: '100%', height: '100%'}}
+                 />
+               </Center>
+               <Stack justifyContent={'center'}>
+                 <Heading size="md" style={{color: '#dddddd'}}>
+                   {item.brand}
+                   {' ' + item.model}
+                 </Heading>
+                 <Text fontSize="md" style={{color: '#dddddd'}}>
+                   {item.location}
+                 </Text>
+                 <Text fontSize="md" style={{color: '#aaaaaa'}}>
+                   {item.fuel_Type}
+                   {' - ' + item.transmission}
+                 </Text>
+                 <Text fontSize="md" style={{color: '#aaaaaa'}}>
+                   {item.mobile}
+                 </Text>
+               </Stack>
+               <VStack
+                 justifyContent={'center'}
+                 space={2}
+                 alignItems="center">
+                 <Text fontSize="xs" style={{color: '#dddddd'}}>
+                   {item.date}
+                 </Text>
+                 <Button
+                   onPress={() => {
+                     navigation.navigate('VehicleDetail', {vehicle: item});
+                   }}
+                   rounded={20}
+                   size={'sm'}
+                   variant="subtle"
+                   colorScheme="green">
+                   DETAILS
+                 </Button>
+                 <Button
+                   onPress={() => {
+                     deleteRecord(item.vehicle_no);
+                   }}
+                   size={'sm'}
+                   rounded={20}
+                   variant="subtle"
+                   colorScheme="secondary">
+                   DELETE
+                 </Button>
+               </VStack>
+             </HStack>
+            ))}
             </ScrollView>
           </Stack>
-          <Center w="90%" h="50" rounded="md">
+          <Center  w={'90%'} h={50} rounded="md">
             <Button
+            w={'100%'}
               mb={3}
               onPress={() => {
                 navigation.navigate('AddVehicle', {id: user});
               }}
               colorScheme="blue"
-                  style={{height: '100%', borderRadius: 100,backgroundColor:'#044BA1'}}>
+              variant={'subtle'}
+              style={{
+                height: '100%',
+                borderRadius: 100,
+                backgroundColor: '#044BA1',
+              }}>
               + ADD NEW
             </Button>
           </Center>
