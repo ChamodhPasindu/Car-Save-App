@@ -21,6 +21,7 @@ import {useIsFocused} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
 
 export default function Home({route, navigation}) {
+
   const isFocused = useIsFocused();
   const {user} = route.params;
 
@@ -44,6 +45,7 @@ export default function Home({route, navigation}) {
     if (isFocused) {
       loadData();
     }
+    
   }, [isFocused]);
 
   const loadData = () => {
@@ -146,91 +148,90 @@ export default function Home({route, navigation}) {
                 icon="reload"
                 color="gray"
                 size={20}
-                onPress={() => {loadData()}}
+                onPress={() => {
+                  loadData();
+                }}
               />
-              
             </HStack>
           </Center>
-          <Stack  w="90%" h="580" rounded="md">
+          <Stack w="90%" h="580" rounded="md">
             <ScrollView>
-            {vehicles.map((item,index)=>(
-               <HStack key={index}
-               padding={3}
-               mb={5}
-               justifyContent="space-between"
-               rounded="md"
-               style={{borderWidth: 1, borderColor: '#595959'}}>
-               <Center
-                 height={'120'}
-                 w="120"
-                 style={{overflow: 'hidden', borderRadius: 5}}>
-                 <Image
-                   borderRadius={6}
-                   source={{
-                     uri:
-                       'file:///data/user/0/com.carappfrontend/cache/' +
-                       item.img_one,
-                   }}
-                   style={{width: '100%', height: '100%'}}
-                 />
-               </Center>
-               <Stack justifyContent={'center'}>
-                 <Heading size="md" style={{color: '#dddddd'}}>
-                   {item.brand}
-                   {' ' + item.model}
-                 </Heading>
-                 <Text fontSize="md" style={{color: '#dddddd'}}>
-                   {item.location}
-                 </Text>
-                 <Text fontSize="md" style={{color: '#aaaaaa'}}>
-                   {item.fuel_Type}
-                   {' - ' + item.transmission}
-                 </Text>
-                 <Text fontSize="md" style={{color: '#aaaaaa'}}>
-                   {item.mobile}
-                 </Text>
-               </Stack>
-               <VStack
-                 justifyContent={'center'}
-                 space={2}
-                 alignItems="center">
-                 <Text fontSize="xs" style={{color: '#dddddd'}}>
-                   {item.date}
-                 </Text>
-                 <Button
-                   onPress={() => {
-                     navigation.navigate('VehicleDetail', {vehicle: item});
-                   }}
-                   rounded={20}
-                   size={'sm'}
-                   variant="subtle"
-                   colorScheme="green">
-                   DETAILS
-                 </Button>
-                 <Button
-                   onPress={() => {
-                     deleteRecord(item.vehicle_no);
-                   }}
-                   size={'sm'}
-                   rounded={20}
-                   variant="subtle"
-                   colorScheme="secondary">
-                   DELETE
-                 </Button>
-               </VStack>
-             </HStack>
-            ))}
+              {vehicles.map((item, index) => (
+                <HStack
+                  key={index}
+                  padding={3}
+                  mb={5}
+                  justifyContent="space-between"
+                  rounded="md"
+                  style={{borderWidth: 1, borderColor: '#595959'}}>
+                  <Center
+                    height={'120'}
+                    w="120"
+                    style={{overflow: 'hidden', borderRadius: 5}}>
+                    <Image
+                      borderRadius={6}
+                      source={{
+                        uri:
+                          'file:///data/user/0/com.carappfrontend/cache/' +
+                          item.img_one,
+                      }}
+                      style={{width: '100%', height: '100%'}}
+                    />
+                  </Center>
+                  <Stack justifyContent={'center'}>
+                    <Heading size="md">
+                      {item.brand}
+                      {' ' + item.model}
+                    </Heading>
+                    <Text fontSize="md">{item.location}</Text>
+                    <Text fontSize="md" style={{color: '#aaaaaa'}}>
+                      {item.fuel_Type}
+                      {' - ' + item.transmission}
+                    </Text>
+                    <Text fontSize="md" style={{color: '#aaaaaa'}}>
+                      {item.mobile}
+                    </Text>
+                  </Stack>
+                  <VStack
+                    justifyContent={'center'}
+                    space={2}
+                    alignItems="center">
+                    <Text fontSize="xs" style={{color: '#aaaaaa'}}>
+                      {item.date}
+                    </Text>
+                    <Button
+                      onPress={() => {
+                        navigation.navigate('VehicleDetail', {vehicle: item});
+                      }}
+                      rounded={20}
+                      size={'sm'}
+                      variant="subtle"
+                      colorScheme="green">
+                      DETAILS
+                    </Button>
+                    <Button
+                      onPress={() => {
+                        deleteRecord(item.vehicle_no);
+                      }}
+                      size={'sm'}
+                      rounded={20}
+                      variant="subtle"
+                      colorScheme="secondary">
+                      DELETE
+                    </Button>
+                  </VStack>
+                </HStack>
+              ))}
             </ScrollView>
           </Stack>
-          <Center  w={'90%'} h={50} rounded="md">
+          <Center w={'90%'} h={50} rounded="md">
             <Button
-            w={'100%'}
+              w={'100%'}
               mb={3}
               onPress={() => {
                 navigation.navigate('AddVehicle', {id: user});
               }}
-              colorScheme="blue"
-              variant={'subtle'}
+              variant={'solid'}
               style={{
                 height: '100%',
                 borderRadius: 100,

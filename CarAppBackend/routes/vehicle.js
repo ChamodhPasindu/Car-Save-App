@@ -74,19 +74,6 @@ router.post("/save", upload.array("file", 4), function (req, res, next) {
   );
 });
 
-router.get("/:id", (req, res) => {
-  let id = req.params.id;
-  var getVehicleImg = "SELECT * FROM vehicle_img WHERE vehicle_no=?";
-  connection.query(getVehicleImg, [id], (err, rows) => {
-    if (err) {
-      console.log(err);
-      res.send({ message: "Error" });
-    } else {
-      res.send({ data: rows });
-    }
-  });
-});
-
 router.get("/allVehicle/:id", (req, res) => {
   let id = req.params.id;
   var getVehicles = "SELECT * FROM vehicle WHERE user_id=?";

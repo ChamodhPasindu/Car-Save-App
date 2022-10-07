@@ -16,7 +16,6 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {elevation: 0},
-          cardStyle: {backgroundColor: '#192138'},
         }}>
         <Stack.Screen
           name="Login"
@@ -33,9 +32,6 @@ export default function App() {
           component={Home}
           options={{
             title: 'Home',
-            headerStyle: {
-              backgroundColor: '#192138',
-            },
             gestureEnabled: false,
             headerShown: true,
             headerLeft: () => <></>,
@@ -46,9 +42,6 @@ export default function App() {
           component={AddVehicle}
           options={{
             title: 'Add New Vehicle',
-            headerStyle: {
-              backgroundColor: '#192138',
-            },
           }}
         />
         <Stack.Screen
@@ -56,9 +49,6 @@ export default function App() {
           component={VehicleDetail}
           options={{
             title: 'Vehicle Details',
-            headerStyle: {
-              backgroundColor: '#192138',
-            },
           }}
         />
       </Stack.Navigator>

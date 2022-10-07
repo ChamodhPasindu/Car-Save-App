@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image} from 'react-native';
+import {Image} from 'react-native';
 import {
   Text,
   Heading,
@@ -9,8 +9,8 @@ import {
   Button,
 } from 'native-base';
 
+
 export default function Login({navigation}) {
-  const [show, setShow] = React.useState(false);
   const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -28,7 +28,6 @@ export default function Login({navigation}) {
       });
       const json = await response.json();
       navigation.navigate('Home', {user: json.user.user_id});
-      
     } catch (error) {
       console.error(error);
       alert('Incorrect Username or Password');
@@ -37,78 +36,81 @@ export default function Login({navigation}) {
 
   return (
     <NativeBaseProvider>
-        <Stack
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            height: '35%',
-          }}>
-          <Image
-          resizeMode='contain'
-            source={require('./images/audi.png')}
-            style={{width: '100%', height: '90%'}}
+      <Stack
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '35%',
+        }}>
+        <Image
+          resizeMode="contain"
+          source={require('./images/audi.png')}
+          style={{width: '100%', height: '90%'}}
+        />
+      </Stack>
+      <Stack
+        style={{
+          width: '100%',
+        }}>
+        <Heading size="3xl" style={{marginLeft: '10%'}}>
+          Login
+        </Heading>
+        <Text fontSize="lg" style={{marginLeft: '10%'}}>
+          Please login to continue
+        </Text>
+        <Stack space={4} w="80%" mx="auto" marginTop={10}>
+          <Input
+            variant="rounded"
+            size="2xl"
+            placeholder="User Name"
+            onChangeText={e => {
+              setUserName(e);
+            }}
+            value={userName}
           />
-        </Stack>
-        <Stack
-          style={{
-            width: '100%',
-          }}>
-          <Heading size="3xl" style={{marginLeft: '10%'}}>
-            Login
-          </Heading>
-          <Text fontSize="lg" style={{marginLeft: '10%'}}>
-            Please login to continue
+          <Input
+            onChangeText={e => {
+              setPassword(e);
+            }}
+            value={password}
+            variant="rounded"
+            type="password"
+            size="2xl"
+            placeholder="Password"
+          />
+          <Button
+            onPress={() => {
+              verifyLogin();
+            }}
+            variant="solid"
+            style={{
+              borderRadius: 100,
+              marginTop: '10%',
+              backgroundColor: '#044BA1',
+            }}
+            size="lg">
+            LOGIN
+          </Button>
+          <Text textAlign="center" style={{color: 'gray'}}>
+            OR
           </Text>
-          <Stack space={4} w="80%" mx="auto" marginTop={10}>
-            <Input
-              variant="rounded"
-              size="2xl"
-              placeholder="User Name"
-              onChangeText={e => {
-                setUserName(e);
-              }}
-              value={userName}
-            />
-            <Input
-              onChangeText={e => {
-                setPassword(e);
-              }}
-              value={password}
-              variant="rounded"
-              type="password"
-              size="2xl"
-              placeholder="Password"
-            />
-            <Button
-              onPress={() => {
-                verifyLogin();
-              }}
-              variant="solid"
-              style={{borderRadius: 100, marginTop: '10%',backgroundColor:'#044BA1'}}
-              
-              size="lg">
-              LOGIN
-            </Button>
-            <Text textAlign="center" style={{color: 'gray'}}>
-              OR
-            </Text>
-            <Button
-              onPress={() => {
-                navigation.navigate('Signup');
-              }}
-              variant="outline"
-              style={{borderRadius: 100}}
-              colorScheme="red"
-              size="lg">
-              SIGNUP
-            </Button>
-          </Stack>
-          <Text style={{textAlign: 'center', marginTop: 40, color: 'gray'}}>
-            © 2021 Copyright Reserved
-          </Text>
+          <Button
+            onPress={() => {
+              navigation.navigate('Signup');
+            }}
+            variant="outline"
+            style={{borderRadius: 100}}
+            colorScheme="red"
+            size="lg">
+            SIGNUP
+          </Button>
         </Stack>
+        <Text style={{textAlign: 'center', marginTop: 40, color: 'gray'}}>
+          © 2021 Copyright Reserved
+        </Text>
+      </Stack>
     </NativeBaseProvider>
   );
 }
