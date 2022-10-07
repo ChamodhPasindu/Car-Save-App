@@ -11,10 +11,7 @@
 * Can delete or update a selected record
 ## Sample Screenshots
 
-![Image of Login](CarAppFrontend/screens/images/login.jpg)
-![Image of Login](CarAppFrontend/screens/images/signup.jpg)
-![Image of Login](CarAppFrontend/screens/images/home.jpg)
-![Image of Login](CarAppFrontend/screens/images/update.jpg)
+![Image of Login](CarAppFrontend/screens/images/Screenshot.png)
 
 ## Tech/framework used
 * React Native
